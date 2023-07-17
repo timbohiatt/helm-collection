@@ -4,6 +4,10 @@ kind: Gateway
 metadata:
   name: {{ .Values.gateway.name }}
   namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- range $key, $val := .Values.global.labels }}
+      {{ $key }}: {{ $val }}
+    {{- end }}
 spec:
   selector:
     asm: ingressgateway
@@ -20,12 +24,20 @@ kind: ServiceAccount
 metadata:
   name: {{ .Values.serviceAccount.name }}
   namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- range $key, $val := .Values.global.labels }}
+      {{ $key }}: {{ $val }}
+    {{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.gateway.name }}
   namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- range $key, $val := .Values.global.labels }}
+      {{ $key }}: {{ $val }}
+    {{- end }}
 spec:
   selector:
     matchLabels:
@@ -90,6 +102,10 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: asm-ingressgateway
   namespace: {{ .Values.namespace.name }}
+  labels:
+    {{- range $key, $val := .Values.global.labels }}
+      {{ $key }}: {{ $val }}
+    {{- end }}
 spec:
   maxReplicas: 5
   minReplicas: 3
